@@ -1,6 +1,9 @@
 import 'dotenv/config';
-import { Telegraf, Markup } from 'telegraf';
-import axios from 'axios';
+import { session, Telegraf } from 'telegraf';
+import { createGroup, deleteGroup, getAllGroupCommand, getNeedGroup } from './scenes/groups/index.js';
+import { commands, description } from './const/index.js';
+import { Stage } from 'telegraf/scenes';
+import { getAllTeachers } from './scenes/users/index.js';
 
 const token = process.env.BOT_TOKEN;
 if (token === undefined) {
@@ -10,35 +13,25 @@ if (token === undefined) {
 const bot = new Telegraf(token);
 
 bot.use(Telegraf.log());
+bot.telegram.setMyCommands(commands);
 
 bot.start(async (ctx) => {
-  const description =
-    'Привет! Это электронное расписание занятий, которое будет удобным и доступным для студентов и преподавателей колледжа. Вот доступные мне команды:';
-
   return await ctx.reply(
-    description,
-    Markup.keyboard([
-      ['Вывести все группы', '1'],
-      ['2', '3'],
-      ['4', '5', '6']
-    ])
-      .oneTime()
-      .resize()
+    `Привет, ${ctx.message.from.first_name ? ctx.message.from.first_name : 'друг'}! ${description}`
   );
 });
 
-bot.hears('Вывести все группы', async (ctx) => {
-  try {
-    const response = await axios.get('http://212.193.62.200:3007/api/group');
+const { enter } = Stage;
+const stage = new Stage([getNeedGroup, createGroup, deleteGroup]);
 
-    const limitedResponse = JSON.stringify(response.data, null, 2).slice(0, 4000);
+bot.use(session());
+bot.use(stage.middleware());
 
-    ctx.replyWithHTML(`<code>${limitedResponse}</code>`);
-  } catch (error) {
-    console.error('Error fetching data from API:', error);
-    ctx.replyWithMarkdown(`*Error fetching data from API:*\n\`${error.message}\``);
-  }
-});
+bot.command('all_groups', getAllGroupCommand);
+bot.command('need_group', enter('getNeedGroup'));
+bot.command('teachers', getAllTeachers);
+bot.command('create_group', enter('createGroup'));
+bot.command('delete_group', enter('deleteGroup'));
 
 bot.launch();
 
