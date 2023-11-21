@@ -4,6 +4,13 @@ import { createGroup, deleteGroup, getAllGroupCommand, getNeedGroup } from './sc
 import { commands, description } from './const/index.js';
 import { Stage } from 'telegraf/scenes';
 import { getAllTeachers } from './scenes/users/index.js';
+import {
+  createSchedule,
+  deleteSchedule,
+  getAllSchedule,
+  getNeedSchedule,
+  getNeedScheduleForWeek
+} from './scenes/schedule/index.js';
 
 const token = process.env.BOT_TOKEN;
 if (token === undefined) {
@@ -22,7 +29,15 @@ bot.start(async (ctx) => {
 });
 
 const { enter } = Stage;
-const stage = new Stage([getNeedGroup, createGroup, deleteGroup]);
+const stage = new Stage([
+  getNeedGroup,
+  createGroup,
+  deleteGroup,
+  getNeedSchedule,
+  createSchedule,
+  getNeedScheduleForWeek,
+  deleteSchedule
+]);
 
 bot.use(session());
 bot.use(stage.middleware());
@@ -32,6 +47,11 @@ bot.command('need_group', enter('getNeedGroup'));
 bot.command('teachers', getAllTeachers);
 bot.command('create_group', enter('createGroup'));
 bot.command('delete_group', enter('deleteGroup'));
+bot.command('all_schedule', getAllSchedule);
+bot.command('need_schedule', enter('getNeedSchedule'));
+bot.command('create_schedule', enter('createSchedule'));
+bot.command('week_schedule', enter('getNeedScheduleForWeek'));
+bot.command('delete_schedule', enter('deleteSchedule'));
 
 bot.launch();
 
