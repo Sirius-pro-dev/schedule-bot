@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  schedule-bot:
+    env_file: .env
+    build: .
+    restart: always
+    ports:
+      - 5777:5777
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
