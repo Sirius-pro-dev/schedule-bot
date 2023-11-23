@@ -169,8 +169,7 @@ export const createSchedule = new WizardScene(
         teacher: ctx.session.teacher,
         group: ctx.session.group,
         locationAddress: ctx.session.locationAddress,
-        classRoom: ctx.session.classRoom,
-        users: []
+        classRoom: ctx.session.classRoom
       });
 
       const schedule = response.data;
@@ -186,9 +185,9 @@ export const createSchedule = new WizardScene(
         const responseData = error.response.data;
 
         if (status === 400 && responseData.error) {
-          ctx.replyWithMarkdown(`*Ошибка валидации*: \n${responseData.error.detail}`);
+          ctx.replyWithMarkdown(`*Ошибка валидации*: ${responseData.error.detail}`);
         } else if (status === 404 && responseData.error) {
-          ctx.replyWithMarkdown(`*Ошибка*: \n${responseData.error.detail}`);
+          ctx.replyWithMarkdown(`*Ошибка*: ${responseData.error.detail}`);
         } else {
           ctx.replyWithMarkdown(`*Ошибка при создании группы:*\n\`${error.message}\``);
         }
@@ -218,7 +217,7 @@ export const deleteSchedule = new WizardScene(
       const scheduleInfo = response.data;
       const formattedInfo = formatScheduleInfo(scheduleInfo);
 
-      ctx.replyWithHTML(`<code>Успешно удалено расписание:/n${formattedInfo}</code>`);
+      ctx.replyWithHTML(`<code>Успешно удалено расписание:\n${formattedInfo}</code>`);
     } catch (error) {
       console.log('Ошибка при удалении расписания:', error);
 
@@ -227,9 +226,9 @@ export const deleteSchedule = new WizardScene(
         const responseData = error.response.data;
 
         if (status === 400 && responseData.error) {
-          ctx.replyWithMarkdown(`*Ошибка*: \n${responseData.error.detail}`);
+          ctx.replyWithMarkdown(`*Ошибка*: ${responseData.error.detail}`);
         } else if (status === 404 && responseData.error) {
-          ctx.replyWithMarkdown(`*Ошибка*: \n${responseData.error.detail}.`);
+          ctx.replyWithMarkdown(`*Ошибка*: ${responseData.error.detail}.`);
         } else {
           ctx.replyWithMarkdown(`*Ошибка при удалении расписания:*\n\`${error.message}\``);
         }

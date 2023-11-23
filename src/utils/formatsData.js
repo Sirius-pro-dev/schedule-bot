@@ -2,7 +2,7 @@ export const formatGroupInfo = (group) => {
   const studentsInfo =
     group.users.length > 0
       ? `Студенты: ${group.users.map((student) => `${student.name} ${student.lastName} ${student.surName}`).join(', ')}`
-      : '';
+      : 'Студенты: Нет данных.';
 
   return `Группа: ${group.name}
 Направление: ${group.major}
@@ -23,6 +23,9 @@ export const formatTeacherInfo = (teacher) => {
 };
 
 export const formatScheduleInfo = (schedule) => {
+  const groupInfoName = schedule.group?.name ? `Группа: ${schedule.group.name}` : 'Группа: нет данных.';
+  const groupInfoCourse = schedule.group?.course ? `Курс: ${schedule.group.course}` : 'Курс: нет данных.';
+
   return `ID: ${schedule._id}
 Дата: ${schedule.date}
 Время: ${schedule.time}
@@ -30,8 +33,8 @@ export const formatScheduleInfo = (schedule) => {
 Форма занятия: ${schedule.classType}
 Локация: ${schedule.locationAddress}
 Аудитория: ${schedule.classRoom}
-Группа: ${schedule.group.name}
-Курс: ${schedule.group.course}
+${groupInfoName}
+${groupInfoCourse}
 `;
 };
 
@@ -48,9 +51,15 @@ export const formatWeekInfo = (schedule) => {
 
       formattedText += `${day}, ${date}:\n`;
 
+      if (lessons.length === 0) {
+        formattedText += 'Нет занятий\n'
+      }
+
       lessons.forEach((lesson) => {
         const { time, name, classType, classRoom, placeActivity, teacher, group } = lesson;
-        formattedText += `${time} - ${name} (${classType}, ауд.${classRoom}, ${placeActivity}, ${teacher}, группа ${group.name})\n`;
+        const groupName = group?.name || 'не указана';
+
+        formattedText += `${time} - ${name} (${classType}, ауд.${classRoom}, ${placeActivity}, ${teacher}, группа ${groupName})\n`;
       });
 
       formattedText += '\n';
