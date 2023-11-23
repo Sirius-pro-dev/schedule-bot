@@ -19,7 +19,7 @@ export const getAllGroupCommand = async (ctx) => {
     if (error.response && error.response.status === 404) {
       ctx.replyWithMarkdown('*Ошибка*: Не найдены группы.');
     } else {
-      ctx.replyWithMarkdown(`*Ошибка при получении данных из API:*\n\`${error.message}\``);
+      ctx.replyWithMarkdown(`*Ошибка при получении данных:*\n\`${error.message}\``);
     }
   }
 };
@@ -41,7 +41,7 @@ export const getNeedGroup = new WizardScene(
 
       ctx.replyWithHTML(`<code>${formattedInfo.slice(0, 4000)}</code>`);
     } catch (error) {
-      console.error('Ошибка при получении данных из API:', error);
+      console.error('Ошибка при получении данных  :', error);
 
       if (error.response) {
         const status = error.response.status;
@@ -51,10 +51,10 @@ export const getNeedGroup = new WizardScene(
         } else if (status === 404) {
           ctx.replyWithMarkdown('*Ошибка*: Название группы не найдено либо не существует.');
         } else {
-          ctx.replyWithMarkdown(`*Ошибка при получении данных из API:*\n\`${error.message}\``);
+          ctx.replyWithMarkdown(`*Ошибка при получении данных:*\n\`${error.message}\``);
         }
       } else {
-        ctx.replyWithMarkdown(`*Ошибка при получении данных из API:*\n\`${error.message}\``);
+        ctx.replyWithMarkdown(`*Ошибка при получении данных:*\n\`${error.message}\``);
       }
     }
 
@@ -108,9 +108,9 @@ export const createGroup = new WizardScene(
       const groupInfo = response.data;
       const formattedInfo = formatGroupInfo(groupInfo);
 
-      ctx.replyWithHTML(`<code>Группа успешно создана! ${formattedInfo.slice(0, 4000)}</code>`);
+      ctx.replyWithHTML(`<code>Группа успешно создана!\n${formattedInfo.slice(0, 4000)}</code>`);
     } catch (error) {
-      console.error('Ошибка при создании группы через API:', error);
+      console.error('Ошибка при создании группы:', error);
 
       if (error.response) {
         const status = error.response.status;
@@ -120,10 +120,10 @@ export const createGroup = new WizardScene(
         } else if (status === 404) {
           ctx.replyWithMarkdown('*Ошибка*: Не найден пользователь.');
         } else {
-          ctx.replyWithMarkdown(`*Ошибка при создании группы через API:*\n\`${error.message}\``);
+          ctx.replyWithMarkdown(`*Ошибка при создании группы:*\n\`${error.message}\``);
         }
       } else {
-        ctx.replyWithMarkdown(`*Ошибка при создании группы через API:*\n\`${error.message}\``);
+        ctx.replyWithMarkdown(`*Ошибка при создании группы:*\n\`${error.message}\``);
       }
     }
 
@@ -148,9 +148,9 @@ export const deleteGroup = new WizardScene(
       const groupInfo = response.data;
       const formattedInfo = formatGroupInfo(groupInfo);
 
-      ctx.replyWithHTML(`<code>Успешно удалена группа: ${formattedInfo.slice(0, 4000)}</code>`);
+      ctx.replyWithHTML(`<code>Успешно удалена группа:\n${formattedInfo.slice(0, 4000)}</code>`);
     } catch (error) {
-      console.error('Ошибка при получении данных из API:', error);
+      console.error('Ошибка при получении данных:', error);
 
       if (error.response) {
         const status = error.response.status;
@@ -160,10 +160,10 @@ export const deleteGroup = new WizardScene(
         } else if (status === 404) {
           ctx.replyWithMarkdown('*Ошибка*: Название группы не найдено либо не существует.');
         } else {
-          ctx.replyWithMarkdown(`*Ошибка при получении данных из API:*\n\`${error.message}\``);
+          ctx.replyWithMarkdown(`*Ошибка при получении данных:*\n\`${error.message}\``);
         }
       } else {
-        ctx.replyWithMarkdown(`*Ошибка при получении данных из API:*\n\`${error.message}\``);
+        ctx.replyWithMarkdown(`*Ошибка при удалении группы:*\n\`${error.message}\``);
       }
     }
 
